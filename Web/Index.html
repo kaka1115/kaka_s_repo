@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上海悦舟船务有限公司</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP 动画库 (还原squareform的流畅动画) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <!-- 自定义配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#111111', // squareform 主色
+                        secondary: '#666666', // 次要文字色
+                        accent: '#888888', // 强调色 (hover/边框)
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'], // 极简无衬线字体
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-balance {
+                text-wrap: balance;
+            }
+            .scroll-smooth {
+                scroll-behavior: smooth;
+            }
+            .hover-lift {
+                @apply transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md;
+            }
+        }
+    </style>
+    <style>
+        /* 基础重置 & 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #ffffff;
+            color: #111111;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        /* 滚动条极简样式 (匹配squareform) */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+<body class="scroll-smooth font-sans">
+    <!-- 极简导航栏 (滚动时变化) -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full py-6 px-8 md:px-16 flex justify-between items-center z-50 transition-all duration-500">
+        <a href="#" class="text-xl font-medium text-primary">上海悦舟船务有限公司</a>
+        <div class="hidden md:flex gap-8">
+            <a href="#about" class="text-secondary hover:text-primary transition-colors">关于</a>
+            <a href="#skills" class="text-secondary hover:text-primary transition-colors">技能</a>
+            <a href="#projects" class="text-secondary hover:text-primary transition-colors">项目</a>
+            <a href="#contact" class="text-secondary hover:text-primary transition-colors">联系</a>
+            <a href="#cloud" class="text-secondary hover:text-primary transition-colors">云计算</a>
+        </div>
+        <!-- 移动端汉堡菜单 -->
+        <button class="md:hidden text-primary" id="menuBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div id="mobileMenu" class="fixed top-0 right-0 w-0 h-full bg-white z-40 overflow-hidden transition-all duration-300 flex flex-col justify-center items-center gap-8">
+        <button id="closeMenu" class="absolute top-6 right-8 text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <a href="#about" class="text-xl text-primary">关于</a>
+        <a href="#business" class="text-xl text-primary">业务</a>
+        <a href="#projects" class="text-xl text-primary">项目</a>
+        <a href="#contact" class="text-xl text-primary">联系</a>
+        <!-- 新增：移动端云计算导航链接 -->
+        <a href="#cloud" class="text-xl text-primary">云计算</a>
+    </div>
+
+    <!-- Hero 区域 (核心视觉，匹配squareform的极简大标题) -->
+    <section class="min-h-screen flex flex-col justify-center px-8 md:px-16 py-20">
+        <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-medium leading-tight mb-6 opacity-100" id="heroTitle">
+            你好，<br>我们是 <span class="text-accent">上海悦舟船务</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-secondary max-w-2xl mb-12 opacity-100" id="heroDesc">
+            一群专注于国内外拖带业务的专业人士，服务全球，值得信赖。
+        </p>
+        <a href="#projects" class="inline-block px-8 py-3 border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 w-fit opacity-0" id="heroBtn">
+            查看我们的拖带经验
+        </a>
+    </section>
+
+    <!-- 关于我模块 -->
+    <section id="about" class="py-20 px-8 md:px-16">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-medium mb-12 opacity-100" data-animation="fadeUp">关于我们</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="opacity-100" data-animation="fadeUp">
+                    <p class="text-secondary mb-6">
+                        上海悦舟船务有限公司是一个以航运与海洋工程相结合的跨行业、跨区域、多元化经营的民营企业。
+                        公司创建于2015年4月，注册资金500万，取得无船承运人资质，以海上重大件运输、远洋拖带、半潜船运输、船舶买卖、同时可为海运、
+                        进出口贸易、货物及其船舶代理、报关报检、海事咨询等物流领域提供综合性全方位的技术支持
+                        和一站式服务，积极致力于给客户提供一整套安全、专业、经济、高效的运输解决方案等海洋工程为主。
+                    </p>
+                    <p class="text-secondary">
+                        现具体操作多艘远洋拖轮。公司下设事业部、航运部、航运部、财务部等多个部门，现拥有员工10人，其中4人为高级管理人员。
+                        我公司地处上海市，是长三角经济区域的前沿首站，地理位置适中，自然环境优越，水陆交通便捷，同时在香港和新加坡设有办公室。
+                    </p>
+                </div>
+                <div class="opacity-100" data-animation="fadeUp">
+                    <div class="bg-gray-100 h-80 md:h-96 rounded-sm overflow-hidden hover-lift">
+                        <!-- 替换为你的个人照片 -->
+                        <img src="https://picsum.photos/800/600" alt="公司相关图片" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 业务模块 -->
+    <section id="skills" class="py-20 px-8 md:px-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-medium mb-12 opacity-100" data-animation="fadeUp">我们的业务</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- 业务卡片 1 -->
+                <div class="bg-white p-6 rounded-sm hover-lift opacity-100" data-animation="fadeUp">
+                    <h3 class="text-lg font-medium mb-2">ocean towing</h3>
+                    <p class="text-secondary text-sm">精通内拖带和国际拖带，包括救助，打捞，无动力船拖带等</p>
+                </div>
+                <!-- 业务卡片 2 -->
+                <div class="bg-white p-6 rounded-sm hover-lift opacity-100" data-animation="fadeUp">
+                    <h3 class="text-lg font-medium mb-2">船舶买卖</h3>
+                    <p class="text-secondary text-sm">有二十余年拖带经验，具有丰富的买卖船经验</p>
+                </div>
+                <!-- 业务卡片 3 -->
+                <div class="bg-white p-6 rounded-sm hover-lift opacity-100" data-animation="fadeUp">
+                    <h3 class="text-lg font-medium mb-2">重大件货物运输</h3>
+                    <p class="text-secondary text-sm">熟悉甲板船市场，国际货物航行</p>
+                </div>
+                <!-- 技业务卡片 4 -->
+                <div class="bg-white p-6 rounded-sm hover-lift opacity-100" data-animation="fadeUp">
+                    <h3 class="text-lg font-medium mb-2">船舶代理</h3>
+                    <p class="text-secondary text-sm">掌熟练掌握上海进出口代理业务流程，具有丰富的上海代理经验</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目模块 -->
+    <section id="projects" class="py-20 px-8 md:px-16">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-medium mb-12 opacity-100" data-animation="fadeUp">我们的项目</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- 项目卡片 1 -->
+                <div class="group opacity-100" data-animation="fadeUp">
+                    <div class="bg-gray-100 h-64 rounded-sm overflow-hidden mb-4 group-hover:scale-[1.02] transition-transform duration-300">
+                        <img src="https://picsum.photos/800/500?random=1" alt="项目截图" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-medium mb-2">项目名称 1</h3>
+                    <p class="text-secondary mb-4">铭德5002拖带PB3108</p>
+                    <a href="#" class="text-primary hover:text-accent transition-colors flex items-center gap-2">
+                        查看详情 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+                <!-- 项目卡片 2 -->
+                <div class="group opacity-100" data-animation="fadeUp">
+                    <div class="bg-gray-100 h-64 rounded-sm overflow-hidden mb-4 group-hover:scale-[1.02] transition-transform duration-300">
+                        <img src="https://picsum.photos/800/500?random=2" alt="项目截图" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-medium mb-2">项目名称 2</h3>
+                    <p class="text-secondary mb-4">铭德4002拖带Yohanna327</p>
+                    <a href="#" class="text-primary hover:text-accent transition-colors flex items-center gap-2">
+                        查看详情 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系模块 -->
+    <section id="contact" class="py-20 px-8 md:px-16">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-medium mb-12 opacity-100" data-animation="fadeUp">联系我们</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="opacity-100" data-animation="fadeUp">
+                    <p class="text-secondary mb-8">
+                        如果你对我们的项目感兴趣，或者有合作相关的交流需求，欢迎通过以下方式联系我们。
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span class="text-secondary">weixw@ssslgs.com</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <span class="text-secondary">+86 185 2131 7772</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect width="4" height="12" x="2" y="9"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                            <span class="text-secondary">@TBN</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 极简联系表单 -->
+                <div class="opacity-100" data-animation="fadeUp">
+                    <form class="space-y-6" action="http://101.43.36.164:5000/submit1" method="POST">
+                        <div>
+                            <label for="name" class="block text-sm text-secondary mb-2">姓名</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 border border-gray-200 focus:border-primary outline-none transition-colors" name="name" placeholder="请输入你的姓名">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm text-secondary mb-2">邮箱</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-200 focus:border-primary outline-none transition-colors" name="email" placeholder="请输入你的邮箱">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm text-secondary mb-2">留言</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-3 border border-gray-200 focus:border-primary outline-none transition-colors resize-none" name="message" placeholder="请输入你想对我说的话"></textarea>
+                        </div>
+                        <button type="submit" class="px-8 py-3 bg-primary text-white hover:bg-accent transition-colors duration-300 w-fit">
+                            发送消息
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 云计算模块 -->
+    <section id="cloud" class="py-20 px-8 md:px-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-medium mb-12 opacity-100" data-animation="fadeUp">云计算</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="opacity-100" data-animation="fadeUp">
+                    <p class="text-secondary mb-8">
+                        我们提供航运领域专属的云计算解决方案，涵盖数据存储、智能分析、云端协作等服务，助力航运业务数字化升级，提升运营效率。
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                <line x1="6" y1="1" x2="6" y2="4"></line>
+                                <line x1="10" y1="1" x2="10" y2="4"></line>
+                                <line x1="14" y1="1" x2="14" y2="4"></line>
+                            </svg>
+                            <span class="text-secondary">云端数据存储</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <span class="text-secondary">智能数据分析</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span class="text-secondary">多端协同办公</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 云计算表单 (两条船参数并列两列) -->
+                <div class="opacity-100" data-animation="fadeUp">
+                    <form id="cloudForm" class="space-y-0" action="http://101.43.36.164:5001/submit-cloud" method="POST">
+                        <!-- 两条船参数并列布局 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- 拖轮参数 -->
+                            <div class="space-y-3">
+                                <h4 class="text-lg font-medium text-primary mb-2">拖轮参数</h4>
+                                <!-- 1.船名 -->
+                                <div>
+                                    <label for="TugName" class="block text-xs text-secondary mb-1">船名</label>
+                                    <input type="text" id="TugName" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TugName" placeholder="船名">
+                                </div>
+                                <!-- 2.总长 -->
+                                <div>
+                                    <label for="TugL" class="block text-xs text-secondary mb-1">总长(米)</label>
+                                    <input type="number" step="0.01" id="TugL" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TugL" placeholder="总长">
+                                </div>
+                                <!-- 3.型宽 -->
+                                <div>
+                                    <label for="TugB" class="block text-xs text-secondary mb-1">型宽(米)</label>
+                                    <input type="number" step="0.01" id="TugB" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TugB" placeholder="型宽">
+                                </div>
+                                <!-- 4.型深 -->
+                                <div>
+                                    <label for="TugD" class="block text-xs text-secondary mb-1">型深(米)</label>
+                                    <input type="number" step="0.01" id="TugD" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TugD" placeholder="型深">
+                                </div>
+                                <!-- 5.吃水 -->
+                                <div>
+                                    <label for="Tugd" class="block text-xs text-secondary mb-1">吃水(米)</label>
+                                    <input type="number" step="0.01" id="Tugd" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="Tugd" placeholder="吃水">
+                                </div>
+                                <!-- 6.方形系数 -->
+                                <div>
+                                    <label for="Tug_block_coeff" class="block text-xs text-secondary mb-1">方形系数</label>
+                                    <input type="number" step="0.001" id="Tug_block_coeff" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="Tug_block_coeff" placeholder="方形系数">
+                                </div>
+                                <!-- 7.空气系数 -->
+                                <div>
+                                    <label for="Tug_air_coeff" class="block text-xs text-secondary mb-1">空气系数</label>
+                                    <input type="number" step="0.001" id="Tug_air_coeff" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="Tug_air_coeff" placeholder="空气系数">
+                                </div>
+                                <!-- 8.水上受风高度 -->
+                                <div>
+                                    <label for="TugH" class="block text-xs text-secondary mb-1">水上受风高度(米)</label>
+                                    <input type="number" step="0.01" id="TugH" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TugH" placeholder="受风高度">
+                                </div>
+                            </div>
+
+                            <!-- 被拖船参数 -->
+                            <div class="space-y-3">
+                                <h4 class="text-lg font-medium text-primary mb-2">被拖船参数</h4>
+                                <!-- 1.船名 -->
+                                <div>
+                                    <label for="TowName" class="block text-xs text-secondary mb-1">船名</label>
+                                    <input type="text" id="TowName" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TowName" placeholder="船名">
+                                </div>
+                                <!-- 2.总长 -->
+                                <div>
+                                    <label for="TowL" class="block text-xs text-secondary mb-1">总长(米)</label>
+                                    <input type="number" step="0.01" id="TowL" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TowL" placeholder="总长">
+                                </div>
+                                <!-- 3.型宽 -->
+                                <div>
+                                    <label for="TowB" class="block text-xs text-secondary mb-1">型宽(米)</label>
+                                    <input type="number" step="0.01" id="TowB" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TowB" placeholder="型宽">
+                                </div>
+                                <!-- 4.型深 -->
+                                <div>
+                                    <label for="TowD" class="block text-xs text-secondary mb-1">型深(米)</label>
+                                    <input type="number" step="0.01" id="TowD" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TowD" placeholder="型深">
+                                </div>
+                                <!-- 5.吃水 -->
+                                <div>
+                                    <label for="Towd" class="block text-xs text-secondary mb-1">吃水(米)</label>
+                                    <input type="number" step="0.01" id="Towd" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="Towd" placeholder="吃水">
+                                </div>
+                                <!-- 6.方形系数 -->
+                                <div>
+                                    <label for="Tow_block_coeff" class="block text-xs text-secondary mb-1">方形系数</label>
+                                    <input type="number" step="0.001" id="Tow_block_coeff" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="Tow_block_coeff" placeholder="方形系数">
+                                </div>
+                                <!-- 7.空气系数 -->
+                                <div>
+                                    <label for="Tow_air_coeff" class="block text-xs text-secondary mb-1">空气系数</label>
+                                    <input type="number" step="0.001" id="Tow_air_coeff" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="Tow_air_coeff" placeholder="空气系数">
+                                </div>
+                                <!-- 8.水上受风高度 -->
+                                <div>
+                                    <label for="TowH" class="block text-xs text-secondary mb-1">水上受风高度(米)</label>
+                                    <input type="number" step="0.01" id="TowH" class="w-full px-3 py-2 text-sm border border-gray-200 focus:border-primary outline-none transition-colors" name="TowH" placeholder="受风高度">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 提交按钮 -->
+                        <button type="submit" class="mt-6 px-6 py-2 bg-primary text-white hover:bg-accent transition-colors duration-300 w-fit text-sm">
+                            提交数据
+                        </button>
+                        
+                        <!-- 结果展示区域 -->
+                        <div id="resultArea" class="mt-6 p-4 rounded-sm bg-gray-100 hidden">
+                            <h5 class="text-base font-medium text-primary mb-2">计算结果</h5>
+                            <div id="resultContent" class="text-secondary text-sm space-y-2">
+                                <!-- 结果内容会通过JS动态填充 -->
+                            </div>
+                        </div>
+                        
+                        <!-- 错误提示区域 -->
+                        <div id="errorArea" class="mt-6 p-4 rounded-sm bg-red-50 text-red-600 hidden text-sm">
+                            提交失败，请检查输入内容或稍后重试！
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 px-8 md:px-16 border-t border-gray-200">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <p class="text-secondary text-sm mb-4 md:mb-0">© 上海悦舟船务有限公司 保留所有权利。</p>
+            <div class="flex gap-6">
+                <a href="https://www.hifleet.com/" class="text-secondary hover:text-primary transition-colors">船队在线</a>
+                <a href="https://www.bilibili.com/" class="text-secondary hover:text-primary transition-colors">哔哩哔哩</a>
+                <a href="https://www.zhihu.com/" class="text-secondary hover:text-primary transition-colors">知乎</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 核心动画逻辑 -->
+    <script>
+        // 注册GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-4', 'bg-white/90', 'backdrop-blur-sm', 'shadow-sm');
+                navbar.classList.remove('py-6');
+            } else {
+                navbar.classList.add('py-6');
+                navbar.classList.remove('py-4', 'bg-white/90', 'backdrop-blur-sm', 'shadow-sm');
+            }
+        });
+
+        // 移动端菜单逻辑
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.style.width = '100%';
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.style.width = '0';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Hero区域入场动画
+        gsap.timeline()
+            .to('#heroTitle', { opacity: 1, y: 0, duration: 0.8, delay: 0.2 })
+            .to('#heroDesc', { opacity: 1, y: 0, duration: 0.8 }, '-=0.4')
+            .to('#heroBtn', { opacity: 1, y: 0, duration: 0.8 }, '-=0.4');
+
+        // 滚动触发动画 (匹配squareform的渐入效果)
+        document.querySelectorAll('[data-animation="fadeUp"]').forEach(element => {
+            gsap.from(element, {
+                opacity: 0,
+                y: 30,
+                duration: 0.8,
+                scrollTrigger: {
+                    trigger: element,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        });
+
+        // 平滑滚动 (移动端菜单点击后关闭)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单
+                    mobileMenu.style.width = '0';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // 云计算表单异步提交处理
+        const cloudForm = document.getElementById('cloudForm');
+        const resultArea = document.getElementById('resultArea');
+        const resultContent = document.getElementById('resultContent');
+        const errorArea = document.getElementById('errorArea');
+
+        cloudForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // 阻止默认表单提交
+            
+            // 隐藏结果和错误区域
+            resultArea.classList.add('hidden');
+            errorArea.classList.add('hidden');
+
+            // 获取表单数据
+            const formData = new FormData(cloudForm);
+            
+            try {
+                // 发送请求
+                const response = await fetch(cloudForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('请求失败');
+                }
+
+                // 解析响应数据
+                const data = await response.json();
+                
+                // 提取计算结果（适配后端返回格式）
+                let resultText = '';
+                if (typeof data === 'object' && data.hasOwnProperty('the calas')) {
+                    const tValue = data['the calas'].replace('T', '').replace('the calas', '');
+                    resultContent.innerHTML = `
+                        <p>船队的海上拖航总阻力换算成吨为：<strong>${tValue} 吨</strong></p>
+                        <p>注：更多详细阻力数据可查看后端控制台输出</p>
+                    `;
+                } else if (typeof data === 'string') {
+                    // 适配后端直接返回字符串的情况
+                    const tMatch = data.match(/(\d+\.?\d*)T/);
+                    if (tMatch && tMatch[1]) {
+                        resultContent.innerHTML = `
+                            <p>船队的海上拖航总阻力换算成吨为：<strong>${tMatch[1]} 吨</strong></p>
+                            <p>注：更多详细阻力数据可查看后端控制台输出</p>
+                        `;
+                    } else {
+                        resultContent.innerHTML = `<p>计算完成：${data}</p>`;
+                    }
+                } else {
+                    resultContent.innerHTML = '<p>计算完成，具体结果请查看后端控制台</p>';
+                }
+                
+                // 显示结果区域
+                resultArea.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('表单提交错误:', error);
+                // 显示错误区域
+                errorArea.classList.remove('hidden');
+                
+                // 3秒后自动隐藏错误提示
+                setTimeout(() => {
+                    errorArea.classList.add('hidden');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

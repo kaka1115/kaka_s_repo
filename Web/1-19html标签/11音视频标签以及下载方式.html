@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>视频标签</h2>
+    <video src="./media/shipyard.mp4" width="300" controls muted autoplay loop poster="./media/shipyard.jpg"></video>
+    <!-- 因为在h5中 键和值如果是相同的可以省略，这里就是controls="controls" 可以省略为 controls -->
+
+    <h2>视频标签</h2>
+    <video src="./media/shipyard.mp4" width="300" controls muted loop poster="./media/shipyard.png"></video>
+
+    <!-- 兼容性写法 -->
+    <video>
+        <source src="./media/yu7.mp4" type="video/mp4">
+        <p>您的浏览器不支持视频播放 </p>
+    </video>
+
+    <h2>音频标签</h2>
+
+</body>
+</html>

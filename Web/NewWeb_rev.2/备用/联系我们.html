@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我们 - 新诺航运</title>
+    <!-- 引入图标库（公网可访问，线性图标全支持） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            color: #333333;
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* 品牌色定义 - 完全保持原样 */
+        :root {
+            --primary-dark: #121E3D;
+            --primary-red: #D92B2B;
+            --light-gray: #F5F5F7;
+            --text-gray: #666666;
+            --light-text: #999999;
+            --border-color: #E5E7EB;
+            --white: #FFFFFF;
+        }
+
+        /* 顶部导航栏 - 完全保持原样 */
+        header {
+            width: 100%;
+            background-color: var(--primary-dark);
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            font-size: 24px;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav-menu li a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: var(--primary-red);
+        }
+
+        .nav-menu li a.active {
+            font-weight: 600;
+        }
+
+        .lang-switch {
+            color: var(--white);
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            color: var(--primary-red);
+        }
+
+        /* 主内容容器 - 完全保持原样 */
+        .container {
+            max-width: 1280px;
+            margin: 50px auto;
+            padding: 0 5%;
+        }
+
+        /* 页面标题 - 完全保持原样 */
+        .page-title {
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .page-title p {
+            font-size: 12px;
+            color: var(--text-gray);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* 联系内容核心布局 - 完全保持原样 */
+        /* 联系内容核心布局 - 仅修改边框弱化，其他完全保持原样 */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            /* 仅修改了这一行，边框改成极淡色，几乎看不见 */
+            border: 1px solid #f8f8f8;
+        }
+
+        /* 左侧联系信息栏 - 完全保持样式不变，仅修改内容 */
+        /* 左侧联系信息栏 - 仅修改右边框弱化，其他完全保持样式不变 */
+        .contact-info {
+            background-color: var(--white);
+            color: var(--text-gray);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            /* 仅修改了这一行，中间分隔线弱化 */
+            border-right: 1px solid #f8f8f8;
+        }
+
+        .info-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-gray);
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .info-item i {
+            font-size: 18px;
+            color: var(--text-gray);
+            margin-top: 2px;
+            min-width: 18px;
+            font-weight: 400;
+        }
+
+        .info-item .info-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-gray);
+        }
+
+        .info-item .info-content p {
+            font-size: 14px;
+            color: var(--light-text);
+            line-height: 1.8;
+        }
+
+        /* 右侧表单区域 - 完全保持原样 */
+        .contact-form {
+            padding: 30px 25px;
+            background-color: var(--light-gray);
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        .form-group label .required {
+            color: var(--primary-red);
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+
+        .form-group input:hover,
+        .form-group textarea:hover {
+            border-color: var(--primary-dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(217, 43, 43, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-red);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            background-color: #b82020;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(217, 43, 43, 0.25);
+        }
+
+        /* 表单错误提示 */
+        .error-tip {
+            font-size: 12px;
+            color: var(--primary-red);
+            margin-top: 4px;
+            display: none;
+        }
+
+        /* 底部Footer - 完全保持原样 */
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 25px 5%;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .footer-copyright {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        /* 响应式适配 - 完全保持原样 */
+        @media (max-width: 992px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .contact-info {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .nav-menu {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .page-title h1 {
+                font-size: 26px;
+            }
+
+            .contact-info, .contact-form {
+                padding: 25px 18px;
+            }
+
+            .container {
+                margin: 30px auto;
+            }
+        }
+
+        /* 联系我们顶部Banner大图样式 - 仅新增，不改动原有代码 */
+.contact-banner {
+  width: 100%;
+  height: 300px; /* 可自行调整大图高度 */
+  background: url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80") no-repeat center center;
+  background-size: cover; /* 图片全屏铺满不变形 */
+  display: flex;
+  align-items: center; /* 文字垂直居中 */
+  padding: 0 5%; /* 和导航栏左右边距对齐 */
+  position: relative;
+}
+
+/* 可选：加轻微深色遮罩，让白色文字更清晰，和示例效果一致 */
+.contact-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.2); /* 0=完全透明，1=全黑，可按需调整 */
+  z-index: 1;
+}
+
+/* Banner内的文字样式，和示例完全匹配 */
+.banner-content {
+  position: relative;
+  z-index: 2; /* 保证文字在遮罩上方 */
+  color: #ffffff;
+}
+
+.banner-content h2 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.banner-content p {
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+/* 手机端响应式适配，自动调整尺寸 */
+@media (max-width: 768px) {
+  .contact-banner {
+    height: 300px;
+  }
+  .banner-content h2 {
+    font-size: 32px;
+  }
+  .banner-content p {
+    font-size: 24px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-globe"></i>
+            SINO
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#">关于新诺</a></li>
+            <li><a href="#">船队展示</a></li>
+            <li><a href="#">核心业务</a></li>
+            <li><a href="#">航次记录</a></li>
+            <li><a href="#">行业资讯</a></li>
+            <li><a href="#" class="active">联系我们</a></li>
+        </ul>
+        <div class="lang-switch">CN</div>
+    </header>
+
+    
+    <!-- 主内容区 -->
+     <!-- 新增 联系我们顶部全屏大图Banner -->
+      
+    <section class="contact-banner">
+    <div class="banner-content">
+    </div>
+    </section>
+
+    <main class="container">
+        <div class="page-title">
+            <h1>联系我们</h1>
+            <p>CONTACT US</p>
+        </div>
+
+        <div class="contact-wrapper">
+            <!-- 左侧联系信息 - 仅替换为指定的4项内容，格式完全不变 -->
+            <div class="contact-info">
+                <h2 class="info-title">联系方式</h2>
+                <div class="info-list">
+                    <div class="info-item">
+                        <i class="far fa-building"></i>
+                        <div class="info-content">
+                            <h4>公司名称</h4>
+                            <p>中船物流香港有限公司</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="far fa-map-pin"></i>
+                        <div class="info-content">
+                            <h4>公司地址</h4>
+                            <p>上海市普陀区金沙江路1628号10号楼1501室</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="far fa-phone-alt"></i>
+                        <div class="info-content">
+                            <h4>联系电话</h4>
+                            <p>+86(21)6212 6025</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="far fa-fax"></i>
+                        <div class="info-content">
+                            <h4>传真号码</h4>
+                            <p>+86(21)6212 6025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧表单区域 - 完全保持原样 -->
+            <div class="contact-form">
+                <h3 class="form-title">您的信息</h3>
+                <form id="contactForm">
+                    <div class="form-group full-width">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" name="name" placeholder="请输入你的姓名">
+                        <div class="error-tip" id="nameError">请输入你的姓名</div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="email">邮箱</label>
+                        <input type="email" id="email" name="email" placeholder="请输入你的邮箱">
+                        <div class="error-tip" id="emailError">请输入有效的邮箱地址</div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">留言</label>
+                        <textarea id="message" name="message" placeholder="请输入你想对我说的话"></textarea>
+                        <div class="error-tip" id="messageError">请输入留言内容</div>
+                    </div>
+                    <button type="submit" class="submit-btn">发送消息</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部Footer -->
+    <footer>
+        <div class="footer-copyright">
+            © 2024 中船物流香港有限公司 版权所有
+        </div>
+    </footer>
+
+    <!-- 表单验证JS - 完全保持原样 -->
+    <script>
+        const form = document.getElementById('contactForm');
+        const requiredFields = [
+            { id: 'name', errorId: 'nameError' },
+            { id: 'email', errorId: 'emailError' },
+            { id: 'message', errorId: 'messageError' }
+        ];
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                document.getElementById(field.errorId).style.display = 'none';
+            });
+
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const value = input.value.trim();
+                const errorTip = document.getElementById(field.errorId);
+
+                if (!value) {
+                    isValid = false;
+                    errorTip.style.display = 'block';
+                }
+
+                if (field.id === 'email' && value) {
+                    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailReg.test(value)) {
+                        isValid = false;
+                        errorTip.style.display = 'block';
+                    }
+                }
+            });
+
+            if (isValid) {
+                alert('消息发送成功！我们会尽快与您取得联系。');
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>

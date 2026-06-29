@@ -1,0 +1,31 @@
+结构与样式分离，养成良好的开发习惯。
+分离之后可以多个页面复用通一个css文件，改一个直接全部改
+加载速度快，浏览器缓存友好。
+
+# 替换成你上传的文件夹路径
+sudo chown -R www:www /www/wwwroot/wordpress/asset
+sudo chown -R www:www /www/wwwroot/wordpress/css
+
+# 设置文件夹权限
+sudo chmod -R 755 /www/wwwroot/wordpress/asset
+sudo chmod -R 755 /www/wwwroot/wordpress/css
+
+
+1类型选择器
+2类选择器 和 3id选择器
+类选择器：
+以.开头，后跟类名，如nav. 
+身份证的名字 可以使用多次，后期修改样式基本都是类选择器。
+id选择器：
+以#开头后跟id名，如#header, 选择特定id属性的唯一元素。
+同一个页面中 id值必须唯一，不能重复。 类似身份证的编号 只能用一次
+又和文件夹的名字一样，子文件夹的内容不能重复。
+后期主要是配合JavaScript添加交互效果。
+
+4 * 通配符选择器可以选择html中所有的页面样式进行修改。
+
+关系选择器：
+后代选择器 AB
+子代选择器 A>B
+邻接兄弟选择器 A+B
+通用兄弟选择器 A~B

@@ -1,0 +1,70 @@
+
+CREATE
+(:Company {name: "MINGDE"}),
+(:Company {name: "TNS"}),
+(:Company {name: "AMC"})
+
+
+创建船和公司之间的关系：
+// 先找到公司
+MATCH (c:Company {name: "MINGDE"})
+//接着找到一条 船创建一条
+MATCH (s:Ship {name: "MINGDE 4002"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (c:Company {name: "MINGDE"})
+MATCH (s:Ship {name: "MINGDE 5002"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "MINGDE 5003"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "MINGDE 5005"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "MINGDE 9001"})
+CREATE (c)-[:Owner]->(s)
+
+
+
+MATCH (c:Company {name: "TNS"})
+MATCH (s:Ship {name: "TNS CATCHER"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (c:Company {name: "TNS"})
+MATCH (s:Ship {name: "TNS WATCHER"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "TNS DEFENDER"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "TNS BNR"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "JiangJun"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "ILSUNG2"})
+CREATE (c)-[:Owner]->(s)
+
+
+MATCH (c:Company {name: "AMC"})
+
+MATCH (s:Ship {name: "SALVAGE ACE"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "SALVAGE ROVER"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "SALVAGE RIGGER"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "SALVAGE WORKER"})
+CREATE (c)-[:Owner]->(s)
+
+MATCH (s:Ship {name: "SALVAGE CHAMPION"})
+CREATE (c)-[:Owner]->(s)
+
+
+
+

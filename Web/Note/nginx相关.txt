@@ -1,0 +1,32 @@
+vi /www/server/panel/vhost/nginx/106.14.81.30.conf
+直接新建一个优先级高的配置。
+配置内容，回头研究一下语法。
+
+server {
+    listen 80;
+    server_name 106.14.81.30;
+    # 固定你的网站根目录，绝对不会找错
+    root /www/wwwroot/wordpress;
+    # 强制HTML优先
+    index index.html index.htm;
+
+    # 核心规则：解决跳转、下载404
+    # 先找用户访问的文件，找不到就找对应文件夹的index.html，最后才返回404
+    location / {
+        try_files $uri $uri/ $uri.html =404;
+    }
+
+    # 允许所有类型的文件正常访问（你的dwg图纸、图片、网页、脚本全包含）
+    location ~* \.(html|htm|js|css|png|jpg|jpeg|gif|dwg|pdf|zip|rar)$ {
+        expires -1;
+        add_header Access-Control-Allow-Origin *;
+    }
+
+    # 禁止访问隐藏文件，安全加固
+    location ~ /\. {
+        deny all;
+    }
+}
+
+nginx -t && nginx -s reload
+研究一下简单的nginx语法，
